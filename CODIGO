@@ -1,0 +1,131 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+int main() {
+    int n1;
+    string respuesta;
+    int factura = 0;
+    string condicional;
+    int contador = 0;
+    double iva = 0.19;
+    double result = 0;
+    int cont = 0;
+    int contador2 = 0;
+
+    cout << "Ingrese el numero de productos a ingresar: ";
+    cin >> n1;
+
+    struct Producto
+    {
+        string Nombre;
+        int Precio;
+        int Stock;
+        int Ganancias;
+    };
+
+    struct ItemsFactura
+    {
+        int IdFactura;
+        string Nombre;
+        int Precio;
+        int Ganancias;
+    };
+
+
+    Producto productoTemporal;
+    vector<Producto> productos;
+
+    vector<ItemsFactura> itemsFactura;
+    productoTemporal.Stock = 0;
+
+    for (int i = 0; i < n1; i++) {
+        cout << "Ingrese el nombre del producto " << i + 1 << ": ";
+        cin >> productoTemporal.Nombre;
+        cout << "Ingrese el precio del producto " << i + 1 << ": ";
+        cin >> productoTemporal.Precio;
+        cout << "Ingrese la ganancia que generará el producto " << i + 1 << ": ";
+        cin >> productoTemporal.Ganancias;
+        cout << "Ingrese el numero de stock del producto. ";
+        cin >> productoTemporal.Stock;
+
+        productos.push_back(productoTemporal);
+
+
+    }
+    system("cls");
+    do {
+        system("cls");
+        contador = 0;
+        cont = 0;
+
+        do {
+            string n2;
+            int idFactura = (itemsFactura.size() == 0) ? 1 : itemsFactura[itemsFactura.size() - 1].IdFactura + 1;
+            cout << "Escriba el nombre del producto a comprar: ";
+            cin >> n2;
+            for (int x = 0; x < productos.size(); x++) {
+                if (n2 == productos[x].Nombre) {
+                    if (productos[x].Stock == 0) {
+                        cout << "No tenemos este producto en stock por ahora, por lo tanto no lo puedes comprar. " << endl;
+                    }
+                    else
+                    {
+
+                        cout << "Su producto llamado " << productos[x].Nombre << ", tiene un precio de: " << productos[x].Precio << " pesos colombianos." << endl;
+
+                        ItemsFactura item;
+                        item.IdFactura = idFactura;
+                        item.Nombre = productos[x].Nombre;
+                        item.Precio = productos[x].Precio;
+                        productos[x].Stock -= 1;
+                        itemsFactura.push_back(item);
+                        contador += productos[x].Precio;
+                        cont++;
+                        contador2 += productos[x].Ganancias;
+
+                    }
+
+
+                }
+            }
+
+
+            cout << "¿Desea buscar algún otro producto? (si/no): ";
+            cin >> respuesta;
+        } while (respuesta == "si");
+        system("cls");
+        result = (contador * (1 + iva));
+
+        cout << "\nFactura parcial:\n";
+        for (int i = 0; i < itemsFactura.size(); i++) {
+            cout << "|---------------------------------------------------------------------------------------------------------------|" << endl;
+            cout << "|" << itemsFactura[i].Nombre << ": " << itemsFactura[i].Precio << " pesos colombianos" << "|" << endl;
+            cout << "|---------------------------------------------------------------------------------------------------------------|" << endl;
+        }
+        cout << "|---------------------------------------------------------------------------------------------------------------|" << endl;
+        cout << "|---------------------------------------------------------------------------------------------------------------|" << endl;
+        cout << "El precio total a pagar por estos " << cont << " productos es de: " << contador << " pesos colombianos." << endl;
+        cout << "|---------------------------------------------------------------------------------------------------------------|" << endl;
+        cout << "|---------------------------------------------------------------------------------------------------------------|" << endl;
+        cout << "Una vez aplicado el IVA, el precio total sería: " << result << " pesos colombianos." << endl;
+        cout << "|---------------------------------------------------------------------------------------------------------------|" << endl;
+        cout << "|---------------------------------------------------------------------------------------------------------------|" << endl;
+
+        itemsFactura.clear();
+
+        cout << "¿Desea ingresar otra compra aparte? (si/no): ";
+        cin >> condicional;
+
+    } while (condicional == "si");
+    system("cls");
+    cout << "|---------------------------------------------------------------------------------------------------------------|" << endl;
+    cout << "|---------------------------------------------------------------------------------------------------------------|" << endl;
+    cout << "El total de ganancias obtenidas por la venta de los productos es de: " << contador2 << " pesos colombianos." << endl;
+    cout << "Que tenga un feliz resto de dia :) ";
+    cout << "|---------------------------------------------------------------------------------------------------------------|" << endl;
+    cout << "|---------------------------------------------------------------------------------------------------------------|" << endl;
+
+    return 0;
+}
